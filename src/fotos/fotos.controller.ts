@@ -1,4 +1,15 @@
-import { Body, Controller, Get, Param, ParseIntPipe, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Param,
+  ParseIntPipe,
+  Patch,
+  Post,
+} from '@nestjs/common';
 import type { Foto } from './entities/foto.entity.js';
 import { FotosService } from './fotos.service.js';
 
@@ -19,6 +30,20 @@ export class FotosController {
   @Post()
   create(@Body() datos: Omit<Foto, 'id'>) {
     return this.fotosService.create(datos);
+  }
+
+  @Patch(':id')
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() datos: Partial<Omit<Foto, 'id'>>,
+  ): Foto {
+    return this.fotosService.update(id, datos);
+  }
+
+  @Delete(':id')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  remove(@Param('id', ParseIntPipe) id: number): void {
+    this.fotosService.remove(id);
   }
 }
 

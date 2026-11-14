@@ -10,7 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-import { Body, Controller, Get, Param, ParseIntPipe, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, ParseIntPipe, Patch, Post, } from '@nestjs/common';
 import { FotosService } from './fotos.service.js';
 let FotosController = class FotosController {
     fotosService;
@@ -25,6 +25,12 @@ let FotosController = class FotosController {
     }
     create(datos) {
         return this.fotosService.create(datos);
+    }
+    update(id, datos) {
+        return this.fotosService.update(id, datos);
+    }
+    remove(id) {
+        this.fotosService.remove(id);
     }
 };
 __decorate([
@@ -47,6 +53,22 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
 ], FotosController.prototype, "create", null);
+__decorate([
+    Patch(':id'),
+    __param(0, Param('id', ParseIntPipe)),
+    __param(1, Body()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number, Object]),
+    __metadata("design:returntype", Object)
+], FotosController.prototype, "update", null);
+__decorate([
+    Delete(':id'),
+    HttpCode(HttpStatus.NO_CONTENT),
+    __param(0, Param('id', ParseIntPipe)),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number]),
+    __metadata("design:returntype", void 0)
+], FotosController.prototype, "remove", null);
 FotosController = __decorate([
     Controller('fotos'),
     __metadata("design:paramtypes", [FotosService])

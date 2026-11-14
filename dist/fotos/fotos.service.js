@@ -21,9 +21,27 @@ let FotosService = class FotosService {
         return foto;
     }
     create(datos) {
-        const nueva = { id: this.fotos.length + 1, ...datos };
+        const id = this.fotos.length ? Math.max(...this.fotos.map((foto) => foto.id)) + 1 : 1;
+        const nueva = { id, ...datos };
         this.fotos.push(nueva);
         return nueva;
+    }
+    update(id, datos) {
+        const foto = this.findOne(id);
+        if (datos.titulo !== undefined)
+            foto.titulo = datos.titulo;
+        if (datos.descripcion !== undefined)
+            foto.descripcion = datos.descripcion;
+        if (datos.calificacion !== undefined)
+            foto.calificacion = datos.calificacion;
+        return foto;
+    }
+    remove(id) {
+        const indice = this.fotos.findIndex((foto) => foto.id === id);
+        if (indice === -1) {
+            throw new NotFoundException(`Foto ${id} no encontrada`);
+        }
+        this.fotos.splice(indice, 1);
     }
 };
 FotosService = __decorate([
